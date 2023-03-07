@@ -5,7 +5,6 @@ SavingsUnitedPrepare() {
 
   if ! tmux -u has-session -t $sessionName >/dev/null 2>&1
   then
-    echo "create"
     cd $projectDir"/app"
     tmux -u new -d -s $sessionName -n 'helpers'
     tmux split -v -t $sessionName:0.0
@@ -23,12 +22,10 @@ SavingsUnitedPrepare() {
     tmux send-keys -t $sessionName:1.1 "clear; while true; do echo 'production'; read; rm -rf ./public/{assets,packs}; NODE_ENV=production yarn install && NODE_ENV=production rake assets:precompile; done" Enter
   fi
 
-  if wmctrl -l | grep -E "$sessionName" | grep -Ev 'grep|workSpace' >/dev/null
+  if wmctrl -l | grep -E "$sessionName" | grep -Ev 'grep|workSpace|Chrome' >/dev/null
   then
-    echo "to top"
-    wmctrl -ia (wmctrl -l | grep -E "$sessionName" | grep -Ev 'grep|workSpace' | awk '{print $1;}')
+    wmctrl -ia $(wmctrl -l | grep -E "$sessionName" | grep -Ev 'grep|workSpace|Chrome' | awk '{print $1;}')
   else
-    echo "new one"
     gnome-terminal --window -t $sessionName -- tmux -u at -t $sessionName
   fi
 }
