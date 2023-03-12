@@ -217,18 +217,7 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  local i pwd
-  pwd=("${(s:/:)PWD/#$HOME/~}")
-  if (( $#pwd > 1 )); then
-    for i in {1..$(($#pwd-1))}; do
-      if [[ "$pwd[$i]" = .* ]]; then
-        pwd[$i]="${${pwd[$i]}[1,2]}"
-      else
-        pwd[$i]="${${pwd[$i]}[1]}"
-      fi
-    done
-  fi
-  prompt_segment \#464EC7 $CURRENT_FG "${(j:/:)pwd}"
+  prompt_segment blue $CURRENT_FG '%~'
 }
 
 # Virtualenv: current working virtualenv
