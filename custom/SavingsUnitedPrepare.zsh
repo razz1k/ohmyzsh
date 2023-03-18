@@ -1,6 +1,7 @@
 #!/usr/bin/zsh
 SavingsUnitedPrepare() {
   ! command -v tmux 1>/dev/null && echo 'please install tmux' && return
+  ! command -v tmux 1>/dev/null && echo 'please install htop' && return
   curDir=$(pwd)
   sessionName="SavingsUnited"
   projectDir="/home/razz1k/projects/SavingsUnited"
