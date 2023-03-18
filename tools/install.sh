@@ -305,7 +305,7 @@ setup_ohmyzsh() {
   && git config oh-my-zsh.remote origin \
   && git config oh-my-zsh.branch "$BRANCH" \
   && git remote add origin "$REMOTE" \
-  && git fetch --depth=1 origin \
+  && git fetch --recurse-submodules --depth=1 origin \
   && git checkout -b "$BRANCH" "origin/$BRANCH" || {
     [ ! -d "$ZSH" ] || {
       cd -
