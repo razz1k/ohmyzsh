@@ -1,10 +1,12 @@
 #!/usr/bin/zsh
 SavingsUnitedPrepare() {
+  ! command -v tmux 1>/dev/null && echo 'please install tmux' && return
   curDir=$(pwd)
   sessionName="SavingsUnited"
   projectDir="/home/razz1k/projects/SavingsUnited"
   rerunMessage="press Enter for restart"
 
+  [ ! -d "$projectDir/app" ] && echo 'invalid projectDir, please configure the script'
   cd "$projectDir/app" || return
 
   if ! tmux -u has-session -t $sessionName >/dev/null 2>&1
