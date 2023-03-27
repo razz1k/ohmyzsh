@@ -1,7 +1,6 @@
 # Just another config for oh-my-zsh, but my own
 
 [original READ.ME](https://github.com/ohmyzsh/ohmyzsh/blob/master/README.mdr)
-
 To learn more, visit [ohmyz.sh](https://ohmyz.sh), follow [@ohmyzsh](https://twitter.com/ohmyzsh) on Twitter, and join us on [Discord](https://discord.gg/ohmyzsh).
 
 <details>
