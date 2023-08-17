@@ -1,5 +1,6 @@
 #!/usr/bin/zsh
 WorkSpace() {
+  curDir=$(pwd)
   sessionName=$1
 
   if [[ -z $1 ]]
@@ -14,6 +15,8 @@ WorkSpace() {
     *) tmux -u attach -t $sessionName >/dev/null 2>&1 || tmux -u new -s $sessionName
       ;;
   esac
+
+  cd $curDir
 }
 
 _WorkSpace() {
