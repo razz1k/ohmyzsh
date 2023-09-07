@@ -1,5 +1,6 @@
 #!/usr/bin/zsh
 SavingsUnitedPrepare() {
+  uname="$(uname)"
   ! command -v zsh 1>/dev/null && read '?please install zsh' && return
   ! command -v tmux 1>/dev/null && read '?please install tmux' && return
   ! command -v tmux 1>/dev/null && read '?please install htop' && return
@@ -32,11 +33,18 @@ SavingsUnitedPrepare() {
     tmux send-keys -t $sessionName:1.1 "clear; while true; do read '?production'; rm -rf ./public/{assets,packs}; NODE_ENV=production yarn install && NODE_ENV=production rake assets:precompile; done" Enter
   fi
 
-  if wmctrl -l | grep -E "space $sessionName" | grep -Ev 'grep|workSpace|Chrome' >/dev/null
-  then
+  if wmctrl -l | grep -E "space $sessionName" | grep -Ev 'grep|workSpace|Chrome' >/dev/null; then
     wmctrl -ia "$(wmctrl -l | grep -E "space $sessionName" | grep -Ev 'grep|workSpace|Chrome' | awk '{print $1;}')"
   else
-    gnome-terminal --window -t "space $sessionName" -- tmux -u at -t $sessionName
+    if [ "$uname" = 'Linux' ]; then
+      if [ -n "$(which gnome-terminal)" ]; then
+        gnome-terminal --window -t "space $sessionName" -- tmux -u at -t $sessionName
+      else
+        echo 'look for this line and set your terminal to automatically open a window with a prepared tmux session.'
+      fi
+    elif [ "$uname" == 'Darwin' ]; then
+      read '?not ready yet' && return
+    fi
   fi
 
   cd "$curDir" || return
