@@ -1,11 +1,15 @@
 #!/usr/bin/zsh
 SavingsUnitedPrepare() {
+  ! command -v zsh 1>/dev/null && echo 'please install zsh' && return
   ! command -v tmux 1>/dev/null && echo 'please install tmux' && return
   ! command -v tmux 1>/dev/null && echo 'please install htop' && return
+
   curDir=$(pwd)
   sessionName="SavingsUnited"
-  projectDir="/home/razz1k/projects/SavingsUnited"
+  projectDir="/home/$USER/projects/SavingsUnited"
   rerunMessage="press Enter for restart"
+  sqlPayload="UPDATE sites SET hostname = CONCAT(id, '.localhost');"
+  sqlFullCommand='mysql --user="$SU_ENV_DB_user" --password="$SU_ENV_DB_pass" --database="$SU_ENV_DB_name" --execute='\"$sqlPayload\"
 
   [ ! -d "$projectDir/app" ] && echo 'invalid projectDir, please configure the script'
   cd "$projectDir/app" || return
@@ -13,10 +17,10 @@ SavingsUnitedPrepare() {
   if ! tmux -u has-session -t $sessionName >/dev/null 2>&1
   then
     SHELL=$(which zsh) && tmux -u new -d -s $sessionName -n 'helpers'
-    tmux split -v -t $sessionName:0.0
+    tmux split -v -p 80 -t $sessionName:0.0
     tmux split -h -t $sessionName:0.0
     tmux send-keys -t $sessionName:0.1 "clear; while true; do read '?run migrate'; bin/rails db:migrate RAILS_ENV=development && git restore db/schema.rb; done" Enter
-    tmux send-keys -t $sessionName:0.0 "clear; while true; do read '?update database'; echo 'run update db' && zcat $projectDir/production-dump.sql.gz | mysql -u root -p pannacotta; notify-send -t 3000 'mysql' 'dump uploaded'; echo 'copy rake file' && cp $projectDir/update-domains.rake $projectDir/app/lib/tasks/; echo 'update domains' && rake development:update_domains; echo 'remove rake file' && rm $projectDir/app/lib/tasks/update-domains.rake; echo 'restore db/schema.rb' && git restore db/schema.rb; echo 'done'; done" Enter
+    tmux send-keys -t $sessionName:0.0 "clear; while true; do read '?update database'; echo 'run update db'; source $projectDir/.env.sh; zcat $projectDir/production-dump.sql.gz | mysql --user=\"\$SU_ENV_DB_user\" --password=\"\$SU_ENV_DB_pass\" \$SU_ENV_DB_name; notify-send -t 3000 'mysql' 'dump uploaded'; echo 'update domains' && $sqlFullCommand; echo 'done'; done" Enter
     tmux new-window -t $sessionName -n 'development'
     tmux split -h -t $sessionName:1.0 htop -d 25
     tmux send-keys -t $sessionName:1.1 F4 webpack Enter
