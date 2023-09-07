@@ -1,8 +1,9 @@
 #!/usr/bin/zsh
 SavingsUnitedPrepare() {
-  ! command -v zsh 1>/dev/null && echo 'please install zsh' && return
-  ! command -v tmux 1>/dev/null && echo 'please install tmux' && return
-  ! command -v tmux 1>/dev/null && echo 'please install htop' && return
+  ! command -v zsh 1>/dev/null && read '?please install zsh' && return
+  ! command -v tmux 1>/dev/null && read '?please install tmux' && return
+  ! command -v tmux 1>/dev/null && read '?please install htop' && return
+  ! command -v wmctrl 1>/dev/null && read '?please install wmctrl' && return
 
   curDir=$(pwd)
   sessionName="SavingsUnited"
