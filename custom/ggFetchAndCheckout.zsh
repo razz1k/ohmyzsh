@@ -1,5 +1,4 @@
 ggFetchAndCheckout() {
-  branchName="$1"
-  git fetch origin $branchName
-  git checkout $branchName
+  git fetch origin "$1"
+  git checkout "$1"
 }
