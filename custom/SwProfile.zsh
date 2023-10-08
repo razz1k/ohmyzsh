@@ -4,8 +4,8 @@ SwProfile() {
 
   if [[ (! -z $1) && ($current != $1) ]]
   then
-    sudo bash -c "echo $1 > /sys/firmware/acpi/platform_profile"
-    current=$1
+    sudo /home/razz1k/.oh-my-zsh/custom/setProfile.sh $1
+    current=$(cat /sys/firmware/acpi/platform_profile)
   fi
   
   echo "$current"
