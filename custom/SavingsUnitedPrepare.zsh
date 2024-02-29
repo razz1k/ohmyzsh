@@ -21,7 +21,7 @@ SavingsUnitedPrepare() {
     SHELL=$(which zsh) && tmux -u new -d -s $sessionName -n 'helpers'
     tmux split -v -p 80 -t $sessionName:0.0
     tmux split -h -t $sessionName:0.0
-    tmux send-keys -t $sessionName:0.1 "clear; while true; do read '?run migrate'; bin/rails db:migrate RAILS_ENV=development && git restore db/schema.rb; done" Enter
+    tmux send-keys -t $sessionName:0.1 "clear; while true; do read '?run migrate'; rails db:migrate RAILS_ENV=development && git restore db/schema.rb; done" Enter
     tmux send-keys -t $sessionName:0.0 "clear; while true; do read '?update database'; echo 'run update db'; source $projectDir/.env.sh; zcat $projectDir/production-dump.sql.gz | mysql --user=\"\$SU_ENV_DB_user\" --password=\"\$SU_ENV_DB_pass\" \$SU_ENV_DB_name; notify-send -t 3000 'mysql' 'dump uploaded'; echo 'update domains' && $sqlFullCommand; echo 'done'; done" Enter
     tmux new-window -t $sessionName -n 'development'
     tmux split -h -t $sessionName:1.0 htop -d 25
