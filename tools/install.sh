@@ -71,7 +71,7 @@ ZSH="${ZSH:-$HOME/.oh-my-zsh}"
 
 # Default settings
 REPO=${REPO:-ohmyzsh/ohmyzsh}
-REMOTE=${REMOTE:-https://github.com/${REPO}.git}
+REMOTE=${REMOTE:-git@github.com:${REPO}.git}
 BRANCH=${BRANCH:-master}
 
 # Other options
@@ -343,7 +343,7 @@ setup_zshrc() {
       echo "${FMT_YELLOW}Found ${zdot}/.zshrc.${FMT_RESET} ${FMT_GREEN}Keeping...${FMT_RESET}"
       return
     fi
-    
+
     if [ "$OVERWRITE_CONFIRMATION" != "no" ]; then
       # Ask user for confirmation before backing up and overwriting
       echo "${FMT_YELLOW}Found ${zdot}/.zshrc."
