@@ -47,13 +47,26 @@ fi
 : ${ZSH_TMUX_UNICODE:=false}
 
 # ALIASES
-alias ta='tmux attach -t'
-alias tad='tmux attach -d -t'
-alias ts='tmux new-session -s'
-alias tl='tmux list-sessions'
+function _build_tmux_alias {
+  eval "function $1 {
+    if [[ -z \$1 ]] || [[ \${1:0:1} == '-' ]]; then
+      tmux $2 \"\$@\"
+    else
+      tmux $2 $3 \"\$@\"
+    fi
+  }"
+}
+
 alias tksv='tmux kill-server'
-alias tkss='tmux kill-session -t'
+alias tl='tmux list-sessions'
 alias tmuxconf='$EDITOR $ZSH_TMUX_CONFIG'
+
+_build_tmux_alias "ta" "attach" "-t"
+_build_tmux_alias "tad" "attach -d" "-t"
+_build_tmux_alias "ts" "new-session" "-s"
+_build_tmux_alias "tkss" "kill-session" "-t"
+
+unfunction _build_tmux_alias
 
 # Determine if the terminal supports 256 colors
 if [[ $terminfo[colors] == 256 ]]; then
@@ -87,11 +100,13 @@ function _zsh_tmux_plugin_run() {
   [[ "$ZSH_TMUX_ITERM2" == "true" ]] && tmux_cmd+=(-CC)
   [[ "$ZSH_TMUX_UNICODE" == "true" ]] && tmux_cmd+=(-u)
 
+  local _detached=""
+  [[ "$ZSH_TMUX_DETACHED" == "true" ]] && _detached="-d"
   # Try to connect to an existing session.
   if [[ -n "$ZSH_TMUX_DEFAULT_SESSION_NAME" ]]; then
-    [[ "$ZSH_TMUX_AUTOCONNECT" == "true" ]] && $tmux_cmd attach ${ZSH_TMUX_DETACHED:+"-d"} -t $ZSH_TMUX_DEFAULT_SESSION_NAME
+    [[ "$ZSH_TMUX_AUTOCONNECT" == "true" ]] && $tmux_cmd attach $_detached -t $ZSH_TMUX_DEFAULT_SESSION_NAME
   else
-    [[ "$ZSH_TMUX_AUTOCONNECT" == "true" ]] && $tmux_cmd attach ${ZSH_TMUX_DETACHED:+"-d"}
+    [[ "$ZSH_TMUX_AUTOCONNECT" == "true" ]] && $tmux_cmd attach $_detached
   fi
 
   # If failed, just run tmux, fixing the TERM variable if requested.
