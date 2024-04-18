@@ -29,7 +29,7 @@ SavingsUnitedPrepare() {
     tmux split -v -p 80 -t $sessionName:1.1
     tmux split -v -p 20 -t $sessionName:1.0
     tmux send-keys -t $sessionName:1.0 "clear; while true; do bundle install; rails s; read '?$rerunMessage rails'; done" Enter
-    tmux send-keys -t $sessionName:1.3 "clear; while true; do read '?$rerunMessage dev'; rm -rf ./public/{assets,packs}; yarn install; ./bin/webpack-dev-server; done" Enter
+    tmux send-keys -t $sessionName:1.3 "clear; while true; do read '?$rerunMessage dev'; rm -rf ./public/{assets,packs}; yarn install; ./bin/shakapacker-dev-server; done" Enter
     tmux send-keys -t $sessionName:1.1 "clear; while true; do read '?$rerunMessage production'; rm -rf ./public/{assets,packs}; NODE_ENV=production yarn install && NODE_ENV=production rake assets:precompile; done" Enter
   fi
 
