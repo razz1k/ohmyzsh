@@ -1,5 +1,5 @@
 #!/usr/bin/zsh
-SavingsUnitedPrepare() {
+SWPrep() {
   uname="$(uname)"
   ! command -v zsh 1>/dev/null && read '?please install zsh' && return
   ! command -v tmux 1>/dev/null && read '?please install tmux' && return
@@ -7,8 +7,8 @@ SavingsUnitedPrepare() {
   ! command -v wmctrl 1>/dev/null && read '?please install wmctrl' && return
 
   curDir=$(pwd)
-  sessionName="SavingsUnited"
-  projectDir="/home/$USER/projects/SavingsUnited/app"
+  sessionName="SWPrep"
+  projectDir="/home/$USER/projects/SWPrep/app"
   rerunMessage="press Enter for restart"
   sqlPayload="UPDATE sites SET hostname = CONCAT(id, '.localhost');"
   sqlFullCommand='mysql --user="$SU_ENV_DB_user" --password="$SU_ENV_DB_pass" --database="$SU_ENV_DB_name" --execute='\"$sqlPayload\"
