@@ -9,7 +9,7 @@ WorkSpace() {
 	fi
 
   case $sessionName in
-    SavingsUnited) SavingsUnitedPrepare
+    SWPrep) SWPrep
       ;;
     *) tmux -u attach -t $sessionName >/dev/null 2>&1 || tmux -u new -s $sessionName
       ;;
@@ -17,7 +17,7 @@ WorkSpace() {
 }
 
 _WorkSpace() {
-  compadd "base" "SavingsUnited"
+  compadd "base" "SWPrep"
 }
 
 compdef _WorkSpace WorkSpace
