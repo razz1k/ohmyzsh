@@ -43,12 +43,16 @@ Acer() {
       ddcutil setvcp 62 $value
       ;;
     brightness)
-      [ -z "$sign" ] && ddcutil setvcp 10 $value || ddcutil setvcp 10 $sign $value
+      if [[ -z $sign ]]; then
+        ddcutil setvcp 10 $value
+      else
+        ddcutil setvcp 10 $sign $value
+      fi
       ;;
     *)
       usage
       return 1
-    ;;
+      ;;
   esac
 }
 
