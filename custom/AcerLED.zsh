@@ -9,7 +9,9 @@
 #    --data-raw '{"on":true}'
 
 AcerLED() {
-  local url headers
+  local url headers brightnes
+
+  brightnes=$1
   url='https://lenta.selmash.keenetic.link/json/si'
   headers='Content-Type: application/json; charset=UTF-8'
 
@@ -17,7 +19,9 @@ AcerLED() {
     curl -s $url -H $headers --data-raw '{"v":true}' | jq '.state.on' | grep -q 'true'
   }
 
-  if getState; then
+  if [[ ! -z $brightnes ]]; then
+    curl -s $url -H $headers --data-raw "{\"bri\":$brightnes}" > /dev/null
+  elif getState; then
     curl -s $url -H $headers --data-raw '{"on":false}' > /dev/null
   else
     curl -s $url -H $headers --data-raw '{"on":true}' > /dev/null
